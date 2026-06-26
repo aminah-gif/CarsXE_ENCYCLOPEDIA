@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarsXE New Hire Encyclopedia</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a; --white: #f5f5f0; --teal: #00c4a0;
+  --teal-glow: rgba(0,196,160,0.13); --slate: #1a1f2e;
+  --slate-mid: #252c3d; --slate-light: #313a52;
+  --muted: #6b7594; --text: #d0d5e8; --orange: #ff7c4a; --yellow: #ffd166;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+body { font-family: 'Space Grotesk', sans-serif; font-size: 15px; line-height: 1.65; background: var(--black); color: var(--text); overflow: hidden; }
+
+#app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+#sidebar {
+  width: 270px;
+  min-width: 270px;
+  flex-shrink: 0;
+  background: var(--slate);
+  border-right: 1px solid var(--slate-light);
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--slate-light); border-radius: 2px; }
+
+#main {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--black);
+}
+
+.brand { padding: 22px 20px 18px; border-bottom: 1px solid var(--slate-light); }
+.brand-logo { font-family: 'Space Mono', monospace; font-size: 17px; font-weight: 700; color: var(--teal); display: flex; align-items: center; gap: 8px; }
+.brand-logo .dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+.brand-sub { font-size: 10px; color: var(--muted); margin-top: 3px; letter-spacing: .5px; text-transform: uppercase; }
+
+.nav-search-wrap { padding: 12px 16px; border-bottom: 1px solid var(--slate-light); }
+.nav-search { width: 100%; background: var(--slate-mid); border: 1px solid var(--slate-light); border-radius: 6px; padding: 8px 12px; font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: var(--white); outline: none; transition: border-color .15s; }
+.nav-search:focus { border-color: var(--teal); }
+.nav-search::placeholder { color: var(--muted); }
+.nav-section { padding: 14px 0 6px; }
+.nav-label { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); padding: 0 18px; margin-bottom: 4px; }
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 9px 18px; cursor: pointer; border-left: 3px solid transparent; transition: all .15s; font-size: 13px; color: var(--muted); }
+.nav-item:hover { background: var(--slate-mid); color: var(--text); border-left-color: var(--slate-light); }
+.nav-item.active { background: var(--teal-glow); color: var(--teal); border-left-color: var(--teal); font-weight: 600; }
+.nav-icon { width: 18px; text-align: center; font-size: 14px; flex-shrink: 0; }
+
+.hero { background: linear-gradient(135deg, var(--slate) 0%, var(--black) 60%); border-bottom: 1px solid var(--slate-light); padding: 52px 56px 44px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(0,196,160,.07) 0%, transparent 70%); pointer-events: none; }
+.hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--teal); margin-bottom: 12px; }
+.hero-title { font-size: 40px; font-weight: 700; line-height: 1.1; letter-spacing: -1.5px; color: var(--white); margin-bottom: 14px; }
+.hero-title span { color: var(--teal); }
+.hero-desc { font-size: 15.5px; color: var(--muted); max-width: 600px; line-height: 1.75; margin-bottom: 28px; }
+.hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+.stat-num { font-family: 'Space Mono', monospace; font-size: 24px; font-weight: 700; color: var(--teal); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
+
+.content { padding: 44px 56px 80px; }
+.section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; }
+.section-title { font-size: 21px; font-weight: 700; color: var(--white); letter-spacing: -.5px; }
+.section-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--teal); background: var(--teal-glow); padding: 2px 8px; border-radius: 3px; }
+
+.glossary-search-wrap { position: relative; margin-bottom: 28px; }
+.glossary-search { width: 100%; background: var(--slate); border: 1px solid var(--slate-light); border-radius: 10px; padding: 14px 20px 14px 46px; font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: var(--white); outline: none; transition: border-color .2s; }
+.glossary-search:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
+.glossary-search::placeholder { color: var(--muted); }
+.search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none; }
+.search-result-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 8px; padding-left: 4px; }
+.no-results { text-align: center; padding: 48px 20px; color: var(--muted); font-size: 14px; display: none; }
+
+.category-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.cat-btn { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .8px; padding: 5px 12px; border-radius: 4px; cursor: pointer; border: 1px solid var(--slate-light); background: var(--slate); color: var(--muted); transition: all .15s; }
+.cat-btn:hover { border-color: var(--teal); color: var(--teal); }
+.cat-btn.active { background: var(--teal-glow); border-color: var(--teal); color: var(--teal); }
+
+.glossary-list { display: flex; flex-direction: column; gap: 3px; }
+.glossary-item { border-radius: 8px; overflow: hidden; }
+.glossary-item.hidden { display: none; }
+.glossary-trigger { display: flex; align-items: center; justify-content: space-between; padding: 15px 18px; cursor: pointer; background: var(--slate); transition: background .15s; user-select: none; gap: 12px; }
+.glossary-trigger:hover { background: var(--slate-mid); }
+.glossary-item.open .glossary-trigger { background: var(--slate-mid); border-bottom: 1px solid var(--slate-light); border-radius: 8px 8px 0 0; }
+.glossary-term-wrap { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.glossary-term { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--white); font-weight: 700; }
+.glossary-cat-tag { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .5px; padding: 2px 7px; border-radius: 3px; flex-shrink: 0; white-space: nowrap; }
+.cat-tech { background: rgba(0,196,160,.1); color: var(--teal); }
+.cat-auto { background: rgba(255,124,74,.1); color: var(--orange); }
+.cat-biz { background: rgba(180,180,255,.1); color: #a0a8ff; }
+.cat-carsxe { background: rgba(0,196,160,.2); color: var(--teal); border: 1px solid rgba(0,196,160,.3); }
+.glossary-chevron { color: var(--muted); transition: transform .2s; font-size: 12px; flex-shrink: 0; }
+.glossary-item.open .glossary-chevron { transform: rotate(180deg); color: var(--teal); }
+.glossary-body { display: none; background: var(--slate); padding: 16px 18px 18px; font-size: 14px; color: var(--text); line-height: 1.75; border-radius: 0 0 8px 8px; }
+.glossary-item.open .glossary-body { display: block; }
+.glossary-body .analogy { margin-top: 10px; padding: 10px 14px; background: var(--teal-glow); border-left: 3px solid var(--teal); border-radius: 0 6px 6px 0; font-size: 13.5px; color: var(--text); font-style: italic; }
+.glossary-body .analogy strong { color: var(--teal); font-style: normal; }
+.highlight { background: rgba(0,196,160,.25); color: var(--white); border-radius: 2px; padding: 0 2px; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin-bottom: 44px; }
+.card { background: var(--slate); border: 1px solid var(--slate-light); border-radius: 10px; padding: 22px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden; }
+.card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--teal); transform: scaleX(0); transition: transform .2s; transform-origin: left; }
+.card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,196,160,.1); }
+.card:hover::after { transform: scaleX(1); }
+.card-icon { font-size: 24px; margin-bottom: 10px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+.card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.card-tag { display: inline-block; margin-top: 12px; font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--teal); background: var(--teal-glow); padding: 3px 8px; border-radius: 3px; }
+
+.detail-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); cursor: pointer; margin-bottom: 26px; transition: color .15s; }
+.detail-back:hover { color: var(--teal); }
+.detail-header { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 28px; }
+.detail-icon-box { width: 54px; height: 54px; background: var(--teal-glow); border: 1px solid rgba(0,196,160,.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+.detail-title { font-size: 26px; font-weight: 700; color: var(--white); letter-spacing: -.8px; line-height: 1.2; margin-bottom: 5px; }
+.detail-subtitle { font-size: 14px; color: var(--muted); }
+.detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; padding: 3px 10px; border-radius: 3px; letter-spacing: .5px; }
+.tag-teal { background: var(--teal-glow); color: var(--teal); }
+.tag-orange { background: rgba(255,124,74,.12); color: var(--orange); }
+.tag-yellow { background: rgba(255,209,102,.12); color: var(--yellow); }
+.detail-body { display: grid; grid-template-columns: 1fr 280px; gap: 28px; align-items: start; }
+.detail-section { margin-bottom: 28px; }
+.detail-section-title { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--teal); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--slate-light); }
+.detail-text { font-size: 14px; color: var(--text); line-height: 1.8; }
+.use-cases { display: flex; flex-direction: column; gap: 10px; }
+.use-case { display: flex; align-items: flex-start; gap: 10px; background: var(--slate); border: 1px solid var(--slate-light); border-radius: 7px; padding: 12px 14px; font-size: 13.5px; }
+.use-case-dot { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+.info-box { background: var(--slate); border: 1px solid var(--slate-light); border-radius: 10px; padding: 18px; }
+.info-row { display: flex; flex-direction: column; gap: 3px; padding: 9px 0; border-bottom: 1px solid var(--slate-light); }
+.info-row:last-child { border-bottom: none; }
+.info-key { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); }
+.info-val { font-size: 13px; color: var(--white); font-weight: 500; }
+.endpoint-box { background: var(--black); border: 1px solid var(--slate-light); border-radius: 6px; padding: 10px 12px; margin-top: 6px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--teal); word-break: break-all; }
+
+.industries-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+.industry-card { background: var(--slate); border: 1px solid var(--slate-light); border-radius: 10px; padding: 22px; transition: all .2s; }
+.industry-card:hover { border-color: rgba(0,196,160,.4); }
+.industry-icon { font-size: 26px; margin-bottom: 10px; }
+.industry-title { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 7px; }
+.industry-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+.industry-apis { display: flex; flex-wrap: wrap; gap: 5px; }
+.api-chip { font-family: 'Space Mono', monospace; font-size: 9.5px; padding: 2px 7px; background: var(--slate-mid); border: 1px solid var(--slate-light); border-radius: 3px; color: var(--muted); text-transform: uppercase; }
+
+.pricing-note { background: linear-gradient(135deg, var(--slate), var(--slate-mid)); border: 1px solid rgba(0,196,160,.2); border-radius: 10px; padding: 22px 26px; margin-bottom: 28px; }
+.pricing-note-title { font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 7px; }
+.pricing-note-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.pricing-note-text strong { color: var(--teal); }
+.how-it-works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 36px; }
+.step-card { background: var(--slate); border: 1px solid var(--slate-light); border-radius: 10px; padding: 20px; }
+.step-num { font-family: 'Space Mono', monospace; font-size: 26px; font-weight: 700; color: var(--teal); opacity: .4; line-height: 1; margin-bottom: 8px; }
+.step-title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 5px; }
+.step-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.compliance-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+.compliance-item { background: var(--slate); border: 1px solid var(--slate-light); border-left: 3px solid var(--orange); border-radius: 0 8px 8px 0; padding: 16px 18px; }
+.compliance-line { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--orange); font-weight: 700; margin-bottom: 6px; }
+.compliance-text { font-size: 13.5px; color: var(--text); line-height: 1.7; }
+
+.alert-box { background: rgba(255,124,74,.07); border: 1px solid rgba(255,124,74,.25); border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; font-size: 13.5px; color: var(--text); line-height: 1.7; }
+.alert-box strong { color: var(--orange); }
+
+@media (max-width: 1000px) { .detail-body { grid-template-columns: 1fr; } .how-it-works { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar"></div>
+  <div id="main">MAIN_PLACEHOLDER</div>
+</div>
+<script>
+const PAGES = {
+  "glossary": `<div class="hero">
+    <div class="hero-eyebrow">Start Here · New Hire Encyclopedia</div>
+    <h1 class="hero-title">Glossary of <span>Terms</span></h1>
+    <p class="hero-desc">Never worked in tech or automotive? Perfect starting point. Every word you'll hear at CarsXE — explained plainly, with real-life analogies. No jargon left unexplained.</p>
+  </div>
+  <div class="content">
+
+    <!-- LIVE SEARCH -->
+    <div class="glossary-search-wrap">
+      <span class="search-icon">🔎</span>
+      <input class="glossary-search" type="text" id="glossarySearch" placeholder="Search any term, e.g. "VIN", "API", "market value"…" oninput="searchGlossary(this.value)">
+    </div>
+    <div class="search-result-count" id="resultCount"></div>
+
+    <!-- CATEGORY FILTERS -->
+    <div class="category-filters">
+      <button class="cat-btn active" onclick="filterCat('all', this)">All</button>
+      <button class="cat-btn" onclick="filterCat('tech', this)">🟢 Tech</button>
+      <button class="cat-btn" onclick="filterCat('auto', this)">🟠 Automotive</button>
+      <button class="cat-btn" onclick="filterCat('biz', this)">🔵 Business</button>
+      <button class="cat-btn" onclick="filterCat('carsxe', this)">✳️ CarsXE-Specific</button>
+    </div>
+
+    <div class="no-results" id="noResults">No terms matched your search. Try a different word.</div>
+
+    <div class="glossary-list" id="glossaryList">
+
+<!-- ─── TECH ─── -->
+<div class="glossary-item" data-cat="tech" data-terms="api application programming interface what is an api connect software">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">API — Application Programming Interface</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">An API is a way for two pieces of software to talk to each other and share information automatically — without any human in the middle. CarsXE is an API company: customers' software asks CarsXE's software for vehicle data, and CarsXE's software responds. No one at CarsXE manually looks anything up; the whole thing is automated. The word "interface" just means "the point where two things connect" — think of it like a power socket: you plug in, and electricity (data) flows.
+    <div class="analogy"><strong>Analogy:</strong> An API is like a waiter in a restaurant. You (the customer's app) tell the waiter (the API) what you want. The waiter goes to the kitchen (CarsXE's database), gets the food (data), and brings it back to your table — all without you ever going into the kitchen yourself.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="rest restful http get post request response web protocol">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">REST API &amp; HTTP</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">REST (Representational State Transfer) is the most common style of building an API. A REST API uses the same basic technology your browser uses to load websites — called HTTP (HyperText Transfer Protocol). The customer's code sends an HTTP request (like asking a question) and CarsXE sends back an HTTP response (the answer). HTTPS is the secure version — the "S" means the data is encrypted so nobody can intercept it while it travels.
+    <div class="analogy"><strong>Analogy:</strong> HTTP is like the rules of a telephone call — both sides agree on how to speak so they can understand each other. HTTPS is like having that call in a locked private booth instead of a public phone box.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="endpoint url path address what is endpoint">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Endpoint</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">An endpoint is a specific address on the internet that does one particular job. CarsXE has a different endpoint for each product — one for decoding VINs, one for market values, one for recall data, and so on. When a customer wants vehicle specifications, their code sends a request to the /specs endpoint. When they want market value, they send it to /marketvalue. Each endpoint is like a different department you can call.
+    <div class="analogy"><strong>Analogy:</strong> Think of a large company's phone system. Dialling extension 101 connects you to Sales. Extension 205 connects you to Support. Each extension (endpoint) does something different.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="api key password authentication secret access token">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">API Key</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">An API key is a long unique string of letters and numbers — essentially a password — that identifies who is making a request to CarsXE. Every customer gets their own key when they sign up. They include this key in every request they send. CarsXE uses it to confirm the request is from a legitimate paying customer, track how many calls that customer has made, and calculate their bill. If someone's key is stolen, an unauthorised person could make calls and run up charges.
+    <div class="analogy"><strong>Analogy:</strong> An API key is like a hotel room keycard. It lets you in, it identifies you, and the hotel knows exactly who used it and when. You wouldn't hand it to a stranger.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="json format data structure output response text">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">JSON — The Format Data Comes In</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">JSON (JavaScript Object Notation) is the standard format CarsXE uses to send data back to customers. It is structured text — a list of labels and their values, like: {"make": "Toyota", "model": "Camry", "year": 2021}. Developers write code that reads this text and extracts the pieces they need to display in their app. As a non-technical employee, you will never write JSON yourself — just know it is the "packaging" the data comes in.
+    <div class="analogy"><strong>Analogy:</strong> JSON is like a standardised form — every field has a label and a value, so anyone who knows the format can read it immediately.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="sdk library npm package developer tool code helper">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">SDK — Software Development Kit</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">An SDK is a set of pre-written code that CarsXE provides to make it easier for developers to connect to the API. Instead of writing all the connection code from scratch, a developer installs the SDK (like installing an app) and gets ready-made commands. CarsXE has official SDKs for JavaScript and Python — the two most popular programming languages. SDKs speed up integration from weeks to hours.
+    <div class="analogy"><strong>Analogy:</strong> An SDK is like a flat-pack furniture kit with all the pieces pre-cut. You still assemble it, but you don't have to cut the wood yourself.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="integration connect plug in build implement">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Integration</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Integration is the process of connecting CarsXE to a customer's own software so they work together automatically. A developer "builds the integration" — they write code that connects their app to CarsXE's API. Once it is built, it runs on its own forever. The customer never has to do it again (unless something breaks or they add new features). When a sales rep says "they are in the integration phase," it means their developer is currently building the connection.
+    <div class="analogy"><strong>Analogy:</strong> Integration is like installing a new appliance — an electrician connects it to the wiring once, and after that you just use it.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="sandbox test testing mode free trial playground">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Sandbox / Test Mode</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">CarsXE's sandbox is a free testing environment where developers can try the API without paying. They can make real requests, get real responses, and build their integration — all without being charged. CarsXE's sandbox has no time limit and each endpoint has its own sandbox limits. Once they are happy it works, they switch to a live key and start paying per call. A prospect "in the sandbox" is testing, not yet a paying customer.
+    <div class="analogy"><strong>Analogy:</strong> A sandbox is like a test drive. You get to experience exactly how it works before you commit to buying.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="latency speed response time milliseconds fast slow performance">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Latency &amp; Response Time</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Latency is how long it takes to get an answer back after making a request — measured in milliseconds (ms). 1,000 milliseconds = 1 second. CarsXE averages around 120ms, which is extremely fast — about 8 times faster than the blink of an eye. Low latency matters because customers build real-time products: if a dealer's customer is waiting for a trade-in quote, a slow API makes the whole experience feel broken.
+    <div class="analogy"><strong>Analogy:</strong> Latency is like the gap between asking a question in conversation and getting an answer. 120ms is basically instant — like texting someone who replies before you put your phone down.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="uptime reliability availability downtime percentage">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Uptime &amp; Reliability</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Uptime is the percentage of time a service is working and available. CarsXE maintains 99.9% uptime — meaning the API is unavailable for less than 9 hours per year. This matters enormously to customers whose own products depend on CarsXE: if CarsXE goes down, their app may stop working too. CarsXE's public status page at status.carsxe.com lets anyone check whether all systems are running normally at any moment.
+    <div class="analogy"><strong>Analogy:</strong> Uptime is like the reliability of a bridge. If the bridge is open 99.9% of the time, people can count on it. A bridge that's closed unexpectedly — even once — destroys trust.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="rate limit throttle cap max requests per minute">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Rate Limit</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A rate limit is a cap on how many API requests a customer can make in a given time window — for example, 1,000 requests per minute. This prevents any single customer from overwhelming the servers (intentionally or accidentally). If a customer's app hits the limit, the API returns an error until the window resets. High-volume enterprise customers can negotiate higher limits.
+    <div class="analogy"><strong>Analogy:</strong> Rate limits are like the queue at a ticket office. There's a limit to how many people can be served per minute. If you try to push in, you're asked to wait. The limit keeps things fair and working for everyone.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="error code status 200 400 401 404 500 failed success response">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Error Codes &amp; Status Codes</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Every API response includes a three-digit status code telling you whether it worked. <strong>200</strong> = success. <strong>400</strong> = you sent something wrong (e.g. a badly formatted VIN). <strong>401</strong> = your API key is missing or invalid. <strong>404</strong> = no data found for that VIN. <strong>500</strong> = something went wrong on CarsXE's server. These codes are the same across almost every API on the internet, so they are worth knowing. CarsXE only charges for successful (200) calls.
+    <div class="analogy"><strong>Analogy:</strong> Status codes are like traffic lights at an intersection — green (200) means go, yellow means caution, red means stop and figure out what went wrong.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="real time live data fresh current up to date instant">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Real-Time Data</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Real-time data means information is fetched at the exact moment it is requested — not from a pre-saved snapshot that might be days or months old. CarsXE's Market Value API is real-time: the price it returns reflects what the market looks like right now. This matters because vehicle prices change daily. A six-month-old market value is practically useless for a dealer pricing a trade-in today.
+    <div class="analogy"><strong>Analogy:</strong> Real-time data is like checking the weather right now on a live app vs. reading yesterday's newspaper forecast. Both have "the weather" — only one is actually useful today.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="documentation docs developer guide how to use instructions manual">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Documentation ("Docs")</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Documentation is the official written guide that explains how to use an API. It tells developers exactly what to send in a request, what they will get back, what each field means, what errors look like, and includes working code examples. CarsXE's docs live at api.carsxe.com/docs. You will not write code against them as a non-technical employee — but knowing they exist helps you point developers in the right direction.
+    <div class="analogy"><strong>Analogy:</strong> Docs are like an instruction manual for a piece of equipment. Most people don't read them cover to cover — but when you need to know exactly how something works, it's the first place you look.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="ocr optical character recognition image text read scan photo">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">OCR — Optical Character Recognition</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">OCR is a technology that looks at an image or photograph and reads the text in it — converting it into digital characters a computer can process. CarsXE uses OCR in two products: the VIN OCR API (reading a VIN number from a photo of a dashboard sticker) and the Plate Image Recognition API (reading a license plate number from a photo). Instead of typing a VIN or plate manually, a user just takes a photo.
+    <div class="analogy"><strong>Analogy:</strong> OCR is like what your phone does when you photograph a business card and it automatically saves the number. The camera "reads" the text so you don't have to type it.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="computer vision ai artificial intelligence image recognition machine learning">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Computer Vision</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Computer vision is a type of artificial intelligence that teaches computers to understand photographs and video — essentially giving machines the ability to "see." CarsXE's Plate Image Recognition API uses computer vision: instead of a human reading a photo and typing the plate, the AI analyses the pixels and identifies the letters and numbers automatically. It handles different plate styles, lighting conditions, and angles.
+    <div class="analogy"><strong>Analogy:</strong> Computer vision is like training someone to be a very fast reader of images. Show them enough license plate photos and they get good at spotting the plate and reading it — instantly, every time.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="tech" data-terms="scalable scale grow volume handle millions enterprise">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Scalable</span><span class="glossary-cat-tag cat-tech">Tech</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A system is scalable if it handles growth without breaking. CarsXE processes up to roughly 2 million requests daily and is built to grow further. This means a tiny startup can start with 10 requests a day and a large enterprise can run 1 million — on the exact same platform, with the same speed and reliability. Scalability is a major selling point because customers don't want to switch providers when they grow.
+    <div class="analogy"><strong>Analogy:</strong> Scalable is like a restaurant that can serve 5 people or 500 with the same quality. You don't have to move venues every time you need more tables.</div>
+  </div>
+</div>
+
+<!-- ─── AUTOMOTIVE ─── -->
+<div class="glossary-item" data-cat="auto" data-terms="vin vehicle identification number what is vin where to find">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">VIN — Vehicle Identification Number</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A VIN is a unique 17-character code assigned to every motor vehicle ever made. No two cars produced in the same year share a VIN. It encodes the manufacturer, country of origin, vehicle type, engine, model year, and a unique serial number. You can find a VIN printed on a sticker inside the driver's door jamb, on the dashboard visible through the windshield, and on the vehicle's title and registration documents. The VIN is CarsXE's primary input — most API products start with a VIN.
+    <div class="analogy"><strong>Analogy:</strong> A VIN is like a car's passport number — completely unique, permanently tied to that one vehicle, and used to look up everything about it.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="license plate plate number registration number car plate">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">License Plate</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A license plate is the numbered metal or plastic tag attached to the front and/or back of a vehicle, issued by the government when the vehicle is registered. Each plate is tied to a specific vehicle registration in government records. CarsXE's Plate Decoder API can take a plate number plus the state or country, look up the registration, and return the vehicle's information — even if you don't know the VIN.
+    <div class="analogy"><strong>Analogy:</strong> A license plate is like an address for a house — it identifies a specific property (vehicle) registered at a specific location (state/country).</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="make model year brand manufacturer trim what is make model">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Make, Model, Year &amp; Trim</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body"><strong>Make</strong> is the brand: Toyota, Ford, BMW. <strong>Model</strong> is the specific vehicle line: Camry, F-150, X5. <strong>Year</strong> is the model year — note this can differ from when the car was physically built (a 2022 model year car may roll off the line in late 2021). <strong>Trim</strong> is the specific version within a model, indicating features and equipment level: a Toyota Camry might come in LE, SE, XLE, and XSE trims, each with different prices and features. Trim matters because two identical-looking cars can have very different values.
+    <div class="analogy"><strong>Analogy:</strong> Make = brand of phone (Apple), Model = product line (iPhone), Year = release year (2023), Trim = storage tier (256GB Pro Max).</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="vehicle history report accident title salvage ownership records">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Vehicle History Report</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A vehicle history report is a document that summarises everything known about a specific car's past — compiled from insurance claims, DMV records, auction results, and service records. It typically includes: accidents and damage events, number of previous owners, mileage readings over time, title status, theft records, and service history. CarsXE's History API delivers this as structured data. It is one of CarsXE's most important and sensitive products — legally restricted to business use only.
+    <div class="analogy"><strong>Analogy:</strong> A vehicle history report is like a background check for a car. Just as employers check job applicants' history before hiring, buyers check a car's history before purchasing.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="title status clean salvage rebuilt flood junk ownership document">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Title &amp; Title Status</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A vehicle title is the government-issued document that proves legal ownership of a car. Every title has a status — a label that reflects the vehicle's history: <strong>Clean</strong> (no issues), <strong>Salvage</strong> (insurance declared it a total loss after serious damage), <strong>Rebuilt/Reconstructed</strong> (a salvage vehicle that was repaired and returned to the road), <strong>Flood or Fire</strong> (damaged by a natural disaster), <strong>Junk/Crushed</strong> (officially declared unroadworthy). Title status significantly affects value and insurability — a salvage title car is worth far less than an identical clean-title car.
+    <div class="analogy"><strong>Analogy:</strong> A title is like a property deed for a house — it proves who owns it, and stamps on it (like "flood damage") permanently affect the property's value.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="recall nhtsa safety defect manufacturer government repair campaign">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Recall</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A recall is an official action where a manufacturer (or the US government via NHTSA) requires vehicle owners to bring their car in for a free repair of a confirmed safety defect. Common reasons: faulty airbags, brake problems, software bugs. Recalls are publicly logged. Unresolved recalls can be a legal liability for anyone selling or insuring a vehicle. CarsXE's Recall API pulls from NHTSA's database and shows all open and historical recall campaigns for any VIN.</div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="nhtsa national highway traffic safety administration government safety">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">NHTSA</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">NHTSA stands for the National Highway Traffic Safety Administration — the US federal government agency responsible for vehicle safety. They set safety standards, conduct crash tests, investigate complaints, and issue official recall notices. All US recall data flows through NHTSA. CarsXE's Recalls API pulls directly from NHTSA's public database, ensuring the recall data is authoritative and up to date.</div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="obd obd2 diagnostic trouble code check engine dtc p0300">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">OBD-II Code (Diagnostic Trouble Code)</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">OBD stands for On-Board Diagnostics. Every car sold in the US after 1996 has a built-in computer that monitors the engine and other systems. When something goes wrong, it generates an error code like P0300. These codes follow a standardised format: the first letter tells you the system (P = Powertrain/engine, B = Body, C = Chassis, U = Network), followed by four numbers. The "check engine" light on your dashboard means your car's computer has stored an OBD code. CarsXE's OBD Codes Decoder API translates these codes into plain English.
+    <div class="analogy"><strong>Analogy:</strong> OBD codes are like error messages on a computer — they tell technicians exactly what went wrong, but in a code language that needs translating.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="odometer mileage miles kilometers reading rollback fraud">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Odometer &amp; Mileage</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">The odometer is the instrument in a car that records the total distance it has travelled over its lifetime. Mileage is one of the biggest factors affecting a used car's value — more miles generally means more wear and lower value. "Odometer rollback" is a form of fraud where a seller illegally rewinds the odometer to show fewer miles than the car has actually travelled. CarsXE's History API checks for odometer inconsistencies by comparing readings logged at different points in the vehicle's life.
+    <div class="analogy"><strong>Analogy:</strong> Mileage on a car is like wear on a pair of shoes — 10,000 steps tells a different story to 1,000,000 steps, even if they look the same on the surface.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="lien financial claim loan collateral debt car">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Lien</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A lien is a legal financial claim that a lender holds over a vehicle that was used as collateral for an unpaid loan. If someone financed a car, the lender places a lien on the title until the loan is fully repaid. A car with an active lien cannot be fully transferred to a new owner without paying off the debt first. Buying a car with an undisclosed lien means you inherit a financial problem. CarsXE's Lien &amp; Theft Check API reveals active liens before a purchase or loan decision.
+    <div class="analogy"><strong>Analogy:</strong> A lien is like buying a house that still has a mortgage on it — you think you own it outright, but there's a bank claim sitting on it until the debt is cleared.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="ev electric vehicle hybrid phev battery plug in fuel type">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">EV, Hybrid &amp; PHEV</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Different ways vehicles are powered: <strong>EV (Electric Vehicle)</strong> runs entirely on battery power — no petrol engine at all (e.g. Tesla Model 3, Nissan Leaf). <strong>Hybrid</strong> combines a petrol engine with an electric motor to improve fuel efficiency (e.g. Toyota Prius) — the battery charges itself while driving. <strong>PHEV (Plug-in Hybrid)</strong> can be charged from an outlet and run on electricity for short trips, then switches to petrol. CarsXE's Specifications and Plate Decoder APIs both return fuel/power type, helping businesses identify EVs and hybrids in their data.</div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="fleet vehicles company cars trucks manage operations">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Fleet</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A fleet is a group of vehicles owned or operated by one organisation for business purposes — delivery vans, rental cars, service trucks, company cars. Fleet managers need to track specs, maintenance history, recall notices, and values across potentially thousands of vehicles simultaneously. Managing this at scale is impossible without automation, which is exactly where APIs like CarsXE become essential.
+    <div class="analogy"><strong>Analogy:</strong> A fleet is like a large wardrobe where every item needs tracking, maintenance, and eventual replacement. An API is the inventory system that keeps tabs on everything automatically.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="dmv department motor vehicles government registration">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">DMV — Department of Motor Vehicles</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">The DMV is the US government agency (state-level) responsible for vehicle registration, titling, and driver licencing. Each US state has its own DMV. When CarsXE's Plate Decoder API looks up a license plate, it is drawing on records ultimately rooted in DMV registration data. The DMV is the authoritative source for who legally owns a vehicle and which plate is assigned to it.</div>
+</div>
+
+<div class="glossary-item" data-cat="auto" data-terms="powertrain engine transmission drivetrain components">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Powertrain</span><span class="glossary-cat-tag cat-auto">Automotive</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">The powertrain is the collection of parts that generate and deliver power to move the vehicle: primarily the engine, transmission (gearbox), and drivetrain (the shafts connecting to the wheels). When a car spec lists "3.0L inline-6 engine, 8-speed automatic transmission, rear-wheel drive" — that is powertrain information. CarsXE's Specifications API returns detailed powertrain data including engine displacement, cylinder count, horsepower, torque, and transmission type.</div>
+</div>
+
+<!-- ─── BUSINESS ─── -->
+<div class="glossary-item" data-cat="biz" data-terms="market value actual cash value acv price worth valuation">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Market Value / Actual Cash Value (ACV)</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Market value is what a vehicle is genuinely worth in today's market — factoring in age, mileage, condition, location, and recent real sales of comparable vehicles. It differs from MSRP (the original new-car sticker price) and book value (a periodically updated guide). Insurance companies call it ACV (Actual Cash Value) — it is the amount they pay out when a car is written off. CarsXE's Market Value API calculates this in real time from live market data.
+    <div class="analogy"><strong>Analogy:</strong> Market value is like checking what comparable houses sold for last month when pricing your own. The asking price in old listings tells you nothing; recent actual sales do.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="msrp sticker price manufacturer suggested retail price new car">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">MSRP — Manufacturer's Suggested Retail Price</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">MSRP is the price a manufacturer recommends dealers charge for a new vehicle — commonly called the "sticker price." It is "suggested" because dealers can charge more or less depending on demand. MSRP only applies to new vehicles. Once a car is used, its value is driven by market conditions, not the original sticker. CarsXE's Specifications API returns original MSRP as a reference data point.</div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="book value kelley blue book kbb guide static reference">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Book Value</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Book value is a published reference price for a used vehicle from guides like Kelley Blue Book. These values are averages updated periodically — not real-time. They can lag significantly behind actual market conditions. For example, during a car shortage, real market prices may be 20–30% above book value. CarsXE's Market Value API uses live transaction data rather than book guides, giving a more accurate, current picture of what a car is actually worth today.</div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="underwriting insurance risk assessment policy coverage eligibility">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Underwriting</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Underwriting is the process an insurance company uses to decide whether to offer coverage and at what price. For vehicle insurance, this involves assessing the car (specs, age, value, recall history) and the driver. CarsXE helps insurers automate the vehicle side of underwriting — instead of manually researching each car, they get instant data. This makes decisions faster and more accurate.
+    <div class="analogy"><strong>Analogy:</strong> Underwriting is like a bank deciding whether to lend you money — they research your history and situation before deciding yes or no, and at what terms.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="total loss insurance written off damaged beyond repair">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Total Loss</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A total loss is when an insurance company determines that repairing a damaged vehicle would cost more than its actual cash value — typically when repair costs exceed 70–80% of what the car is worth. The insurer pays the owner the ACV and takes ownership of the wreck, which is then assigned a salvage title. CarsXE's Market Value API helps insurers determine ACV quickly, and the History API reveals whether a vehicle has been previously declared a total loss — a fact sellers sometimes hide.</div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="collateral loan security asset pledge auto finance">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Collateral</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Collateral is an asset a borrower pledges to a lender as security for a loan. In auto finance, the vehicle itself is the collateral — if payments stop, the lender can repossess the car. This is why lenders care so much about the vehicle's current value (they need it worth at least as much as the loan) and whether an existing lien already exists (you can't pledge the same car twice as collateral).
+    <div class="analogy"><strong>Analogy:</strong> Collateral is like leaving your watch at the pawnshop in exchange for cash. If you don't come back to repay, they keep the watch.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="fraud detection odometer rollback title washing vin cloning stolen">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Automotive Fraud</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">The automotive industry has several well-known fraud types CarsXE helps detect: <strong>Odometer rollback</strong> — illegally rewinding the mileage counter to inflate value. <strong>Title washing</strong> — re-registering a salvage vehicle in a different state to obtain a clean title. <strong>VIN cloning</strong> — copying a legitimate VIN onto a stolen vehicle. <strong>Misrepresented history</strong> — hiding accidents or damage. CarsXE's History, Lien &amp; Theft Check, and Specifications APIs help businesses catch these schemes before money changes hands.</div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="subscription pay per use usage based pricing model monthly call">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Subscription vs. Pay-Per-Use</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Two common software pricing models. A <strong>subscription</strong> charges a flat monthly or annual fee regardless of use — like Netflix. <strong>Pay-per-use</strong> charges based on actual consumption — like paying per text message. CarsXE uses a hybrid: a modest base subscription fee plus a per-call charge for each successful API response. Failed calls are not charged. This means low-volume customers don't overpay, and high-volume customers pay proportionally to the value they receive.</div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="icp ideal customer profile buyer persona segment target">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">ICP — Ideal Customer Profile</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">An ICP is a description of the type of company that is most likely to buy, stay, and grow with CarsXE. It includes industry, company size, job titles, technical maturity, and specific needs. CarsXE's core ICPs include dealerships, insurance/lending companies, fleet operators, vehicle inspection platforms, and repair shops. Knowing the ICP helps the team focus sales efforts on the most likely buyers rather than chasing everyone.
+    <div class="analogy"><strong>Analogy:</strong> An ICP is like a "wanted" poster — a clear picture of exactly who you're looking for so you recognise them immediately when they walk in the door.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="use case scenario problem solve how company uses product">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Use Case</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">A use case is a specific, real-world scenario in which a product solves a problem. "A dealership uses the Market Value API to price trade-ins instantly" is a use case. Being able to clearly explain use cases is one of the most valuable skills for anyone customer-facing at CarsXE — it helps prospects immediately understand how the product fits their own business, even if they've never used an API before.</div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="b2b b2c business consumer resell end user who can use">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">B2B vs. B2C</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body"><strong>B2B (Business-to-Business)</strong> means selling to other companies. <strong>B2C (Business-to-Consumer)</strong> means selling directly to individual people. CarsXE is a B2B company — it sells to businesses, not directly to consumers. This distinction is also legally significant: CarsXE's vehicle history and ownership data is licensed for business use only and cannot be resold directly to consumers. A startup that wants to offer history reports to individual car buyers must find a different path.</div>
+</div>
+
+<div class="glossary-item" data-cat="biz" data-terms="churn cancel leave customer lose retention">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Churn</span><span class="glossary-cat-tag cat-biz">Business</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Churn refers to customers who cancel their subscription or stop using the product. High churn is bad for business — it means you're losing customers faster than you're gaining them. Common causes at CarsXE include unexpected billing surprises, coverage gaps that weren't set right, or a competitor offering a lower price. Monitoring usage patterns and proactively addressing issues before renewal is how the team prevents churn.
+    <div class="analogy"><strong>Analogy:</strong> Churn is like a leaky bucket — you keep pouring water (new customers) in at the top, but it drips out the bottom (cancellations). Plugging the leaks is just as important as adding more water.</div>
+  </div>
+</div>
+
+<!-- ─── CARSXE-SPECIFIC ─── -->
+<div class="glossary-item" data-cat="carsxe" data-terms="carsxe platform what is carsxe company overview">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">CarsXE — What the Company Is</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">CarsXE is a vehicle data platform that gives businesses instant API access to comprehensive information about any vehicle. Their mission is to "democratise vehicle data" — making it affordable and accessible to any company, from a two-person startup to a Fortune 500. Businesses across dealerships, insurance, fleet management, lending, auto repair, warranty, and parking use CarsXE to build products and make decisions powered by accurate vehicle data. CarsXE processes up to 2 million API requests per day across its 12+ endpoints.</div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="demo vin test vin wbafr bmw 650i standing demo">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Demo VIN (Standing Test VIN)</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">CarsXE's standard demo VIN is <strong>WBAFR7C57CC811956</strong> — a BMW 650i. This is the VIN used in live product demonstrations and during onboarding because it returns clean, complete data quickly. When showing a prospect how the Specifications API works, you run this VIN and they see a full vehicle profile returned in around 120ms. A secondary test VIN is JN1EV7AP6JM355294. Always use these rather than random VINs in demos to avoid unexpected results.</div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="one key all endpoints single api key multiple products platform">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">"One Key, Every Dataset"</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">One of CarsXE's core differentiators is that a single API key (formatted as cxe_live_...) unlocks access to all 12+ endpoints. Customers don't need separate accounts or keys for each product — they integrate once and can access VIN decoding, market values, history reports, recall data, and more all under that one key. This is important for customers who want to consolidate multiple data vendors: instead of managing five different suppliers, they manage one.</div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="coverage country us canada international what countries supported">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Coverage &amp; Geographic Limits</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Coverage varies significantly by product. The US is CarsXE's deepest market — all 12 products cover US vehicles. Several products extend to Canada and Mexico. The International VIN Decoder, Plate Decoder, and Plate Image Recognition cover 50+ countries. Important gaps: Korea and Japan are not covered. Parts of Canada and several European registries are partial. History, Recalls, and Year Make Model are US-focused. Always confirm exact coverage for a customer's specific market before making a promise — never guess.</div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="ownership data pii personal information permissible use legal restriction">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Ownership Data &amp; PII</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Ownership data includes vehicle registration information — who owns a vehicle. PII stands for Personally Identifiable Information — any data that could identify a specific person. CarsXE offers ownership data but it comes with strict legal restrictions: it can only be used for permitted B2B business purposes. It cannot be used to contact individuals, resold to consumers, or used in ways not explicitly approved. Coverage in California and New York is around 25% (an industry-wide limitation, not just CarsXE). When ownership data comes up, always route to legal — never make commitments yourself.</div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="pricing calculator internal tool quote model volume rep">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Internal Pricing Calculator</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">The pricing calculator is an internal tool used by the CarsXE sales team — it is never shared directly with customers. A rep enters a prospect's expected monthly call volume per endpoint and the calculator shows the cost breakdown. The output is a quote document, which is what gets shared with the customer. The point is to help customers understand the unit math (cost per call, by endpoint) rather than presenting a single confusing total that could cause billing surprises.</div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="hubspot crm salesforce customer relationship management deal pipeline">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">HubSpot &amp; CRM</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">CarsXE uses HubSpot as its CRM (Customer Relationship Management) system. A CRM is a software tool that tracks every interaction with prospects and customers — calls, emails, deals, notes, and stages. It is the single source of truth for the sales team. If it is not logged in HubSpot, it officially did not happen. Every deal must have an accurate stage, a real next step, and up-to-date notes. The CRM also feeds the team's AI tools, so poor CRM hygiene means the automated tools give bad recommendations.
+    <div class="analogy"><strong>Analogy:</strong> HubSpot is like the team's shared memory. Everything you learn about a customer goes in — so anyone on the team can pick up where you left off, and nothing falls through the cracks.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="granola meeting notes transcript call recording ai notes">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Granola (Meeting Notes Tool)</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">Granola is an AI-powered meeting notes tool used by the CarsXE team. It listens to sales calls and automatically generates a transcript and structured summary, so reps can focus on the conversation rather than taking notes. After a call, the Granola transcript is used to update HubSpot and draft follow-up emails. This is a core part of CarsXE's "agentic" way of working — letting AI handle admin tasks so humans can focus on building relationships.</div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="agentic ai claude automation agent workflow draft review send">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Agentic Working / AI-First Team</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">CarsXE operates as an "agentic-first" revenue team — meaning AI tools (primarily Claude) handle the repetitive, time-consuming tasks, while humans focus on judgment, relationships, and decisions. In practice: AI researches prospects, drafts follow-up emails, updates the CRM, monitors at-risk accounts, and prepares call briefs. Humans review and approve everything before it is sent or acted on. The rule: agents draft, humans decide. No message is ever auto-sent. This approach lets a small team operate with the output of a much larger one.</div>
+  </div>
+</div>
+
+<div class="glossary-item" data-cat="carsxe" data-terms="compliance permissible use legal restriction history ownership display resell">
+  <div class="glossary-trigger" onclick="toggleGlossary(this)">
+    <div class="glossary-term-wrap"><span class="glossary-term">Compliance Lines at CarsXE</span><span class="glossary-cat-tag cat-carsxe">CarsXE</span></div>
+    <span class="glossary-chevron">▾</span>
+  </div>
+  <div class="glossary-body">There are five hard legal lines every CarsXE employee must know: (1) Vehicle history and ownership data is for B2B use only — never resell to consumers. (2) Displaying full history data to end users is restricted — route to legal. (3) Using ownership/PII data to contact individuals requires legal approval. (4) Enterprise contract terms (SLAs, warranties, indemnification) are owned by legal — never improvise. (5) Enterprise legal reviews take 60–120 days — silence is normal, not a lost deal. When in doubt: say "let me confirm that and come back to you," then route to your manager.</div>
+</div>
+
+    </div><!-- end glossary-list -->
+  </div><!-- end content -->
+</div><!-- end page-glossary -->
+
+<!-- ═══════════════ OVERVIEW ═══════════════ -->`,
+  "overview": `<div class="hero">
+    <div class="hero-eyebrow">Company</div>
+    <h1 class="hero-title">What is <span>CarsXE?</span></h1>
+    <p class="hero-desc">CarsXE is a vehicle data platform that gives businesses instant API access to comprehensive information about any vehicle — from decoding a VIN to checking a car's full accident history.</p>
+    <div class="hero-stats">
+      <div><div class="stat-num">275M+</div><div class="stat-label">Vehicle Records</div></div>
+      <div><div class="stat-num">12+</div><div class="stat-label">API Endpoints</div></div>
+      <div><div class="stat-num">50+</div><div class="stat-label">Countries</div></div>
+      <div><div class="stat-num">~120ms</div><div class="stat-label">Response Time</div></div>
+      <div><div class="stat-num">99.9%</div><div class="stat-label">Uptime</div></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="section-header"><h2 class="section-title">The one-liner</h2></div>
+    <p style="color:var(--muted);font-size:15px;line-height:1.85;max-width:700px;margin-bottom:36px;">CarsXE is a developer-friendly platform of vehicle-data APIs: decode a VIN or plate, pull full specifications, get a real-time market value, surface vehicle history and recalls, check liens and theft, retrieve images, and read OBD codes — all through one key, in JSON, fast. One integration scales from 100 calls to 10 million.</p>
+
+    <div class="section-header"><h2 class="section-title">Why we win</h2></div>
+    <div class="card-grid" style="margin-bottom:40px;">
+      <div class="card" style="cursor:default;">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Breadth in one platform</div>
+        <div class="card-desc">Most competitors are strong at one thing. CarsXE covers everything under one key — customers consolidate multiple vendors into one. One customer (Wrench) replaced five separate providers with CarsXE.</div>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Developer experience</div>
+        <div class="card-desc">One key, clean JSON, real SDKs, fast responses, sandbox and test VINs. Engineers integrate in minutes, not weeks — which compresses the sales cycle.</div>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="card-icon">💳</div>
+        <div class="card-title">Pay for what works</div>
+        <div class="card-desc">Customers only pay for calls that successfully return data. No charge for errors, failed lookups, or no-result responses. No rigid seat licences.</div>
+      </div>
+      <div class="card" style="cursor:default;">
+        <div class="card-icon">🤝</div>
+        <div class="card-title">Honesty &amp; support</div>
+        <div class="card-desc">CarsXE tells customers the truth about coverage gaps and limitations. In a market full of opaque vendors, transparency is a real competitive edge.</div>
+      </div>
+    </div>
+
+    <div class="section-header"><h2 class="section-title">All 12 products</h2><span class="section-count">12 APIs</span></div>
+    <div class="card-grid">
+      <div class="card" onclick="showPage('specs')"><div class="card-icon">🔍</div><div class="card-title">Specifications API</div><div class="card-desc">Decode any VIN and get hundreds of vehicle data points.</div><span class="card-tag">Core</span></div>
+      <div class="card" onclick="showPage('intlvin')"><div class="card-icon">🌍</div><div class="card-title">International VIN Decoder</div><div class="card-desc">VIN decoding across 50+ countries worldwide.</div><span class="card-tag">Global</span></div>
+      <div class="card" onclick="showPage('plate')"><div class="card-icon">🪪</div><div class="card-title">Plate Decoder API</div><div class="card-desc">Turn a license plate into full vehicle information.</div><span class="card-tag">Lookup</span></div>
+      <div class="card" onclick="showPage('images')"><div class="card-icon">📷</div><div class="card-title">Images API</div><div class="card-desc">Professional stock photos for any vehicle.</div><span class="card-tag">Media</span></div>
+      <div class="card" onclick="showPage('history')"><div class="card-icon">📋</div><div class="card-title">History API</div><div class="card-desc">Full vehicle history: accidents, owners, mileage, title.</div><span class="card-tag">Reports</span></div>
+      <div class="card" onclick="showPage('market')"><div class="card-icon">💰</div><div class="card-title">Market Value API</div><div class="card-desc">Real-time pricing based on current market conditions.</div><span class="card-tag">Pricing</span></div>
+      <div class="card" onclick="showPage('recalls')"><div class="card-icon">⚠️</div><div class="card-title">Vehicle Recalls API</div><div class="card-desc">NHTSA recall data for any VIN.</div><span class="card-tag">Safety</span></div>
+      <div class="card" onclick="showPage('plateimg')"><div class="card-icon">📸</div><div class="card-title">Plate Image Recognition</div><div class="card-desc">Read license plates from photos using AI.</div><span class="card-tag">AI / Vision</span></div>
+      <div class="card" onclick="showPage('vinocr')"><div class="card-icon">🔡</div><div class="card-title">VIN OCR API</div><div class="card-desc">Extract VIN numbers from photos automatically.</div><span class="card-tag">AI / Vision</span></div>
+      <div class="card" onclick="showPage('ymm')"><div class="card-icon">🚗</div><div class="card-title">Year Make Model API</div><div class="card-desc">Look up vehicle data without a VIN.</div><span class="card-tag">Lookup</span></div>
+      <div class="card" onclick="showPage('obd')"><div class="card-icon">🔧</div><div class="card-title">OBD Codes Decoder</div><div class="card-desc">Translate diagnostic fault codes into plain English.</div><span class="card-tag">Diagnostics</span></div>
+      <div class="card" onclick="showPage('lien')"><div class="card-icon">🔒</div><div class="card-title">Lien &amp; Theft Check</div><div class="card-desc">Check for active liens and theft records.</div><span class="card-tag">Risk</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ INDUSTRIES ═══════════════ -->`,
+  "industries": `<div class="hero" style="padding:40px 56px 36px">
+    <div class="hero-eyebrow">Company</div>
+    <h1 class="hero-title">Industries <span>Served</span></h1>
+    <p class="hero-desc">CarsXE powers businesses across the entire automotive ecosystem. Here's who buys, what they use, and why.</p>
+  </div>
+  <div class="content">
+    <div class="industries-grid">
+      <div class="industry-card"><div class="industry-icon">🏪</div><div class="industry-title">Dealerships &amp; Marketplaces</div><div class="industry-desc">Enrich listings with real-time specs and images, price trade-ins instantly with market value data, and provide buyers with history reports — closing deals faster with data-backed transparency.</div><div class="industry-apis"><span class="api-chip">Specs</span><span class="api-chip">Market Value</span><span class="api-chip">History</span><span class="api-chip">Images</span></div></div>
+      <div class="industry-card"><div class="industry-icon">🛡️</div><div class="industry-title">Insurance (Insurtech)</div><div class="industry-desc">Automate underwriting and fraud detection by verifying vehicle identity, history, and actual cash value. Streamline claim processing without manual lookups.</div><div class="industry-apis"><span class="api-chip">Specs</span><span class="api-chip">History</span><span class="api-chip">Market Value</span><span class="api-chip">Recalls</span></div></div>
+      <div class="industry-card"><div class="industry-icon">💳</div><div class="industry-title">Lending &amp; Auto Finance</div><div class="industry-desc">Verify vehicle identity and current value before approving loans. Check for existing liens to prevent collateral fraud. Use history reports to assess asset risk.</div><div class="industry-apis"><span class="api-chip">Specs</span><span class="api-chip">Market Value</span><span class="api-chip">History</span><span class="api-chip">Lien Check</span></div></div>
+      <div class="industry-card"><div class="industry-icon">🚛</div><div class="industry-title">Fleet Management</div><div class="industry-desc">Track specs, maintenance records, OBD fault codes, and recall notices across hundreds of vehicles — identifying issues proactively at scale.</div><div class="industry-apis"><span class="api-chip">Specs</span><span class="api-chip">History</span><span class="api-chip">OBD Codes</span><span class="api-chip">Recalls</span></div></div>
+      <div class="industry-card"><div class="industry-icon">📜</div><div class="industry-title">Warranty Providers</div><div class="industry-desc">Assess coverage eligibility accurately using vehicle specs and service history. Recall data shows existing manufacturer obligations before writing a new contract.</div><div class="industry-apis"><span class="api-chip">Specs</span><span class="api-chip">History</span><span class="api-chip">Recalls</span><span class="api-chip">Market Value</span></div></div>
+      <div class="industry-card"><div class="industry-icon">🔩</div><div class="industry-title">Auto Repair Shops</div><div class="industry-desc">Pull vehicle specs and open recalls instantly when a car arrives. OBD decoding speeds up diagnostics. Recall checks ensure open safety campaigns are never missed.</div><div class="industry-apis"><span class="api-chip">Specs</span><span class="api-chip">OBD Codes</span><span class="api-chip">Recalls</span><span class="api-chip">History</span></div></div>
+      <div class="industry-card"><div class="industry-icon">🅿️</div><div class="industry-title">Parking &amp; Smart Garages</div><div class="industry-desc">Identify vehicles by license plate, determine their size, and automate entry/exit logging — creating frictionless experiences without attendants.</div><div class="industry-apis"><span class="api-chip">Plate Decoder</span><span class="api-chip">Plate Image</span><span class="api-chip">Specs</span></div></div>
+      <div class="industry-card"><div class="industry-icon">🚗</div><div class="industry-title">Car Rental Companies</div><div class="industry-desc">Maintain accurate fleet records, display vehicle photos to customers at booking, and automate check-in/check-out using plate or VIN scanning.</div><div class="industry-apis"><span class="api-chip">Specs</span><span class="api-chip">Images</span><span class="api-chip">VIN OCR</span><span class="api-chip">Plate Image</span></div></div>
+      <div class="industry-card"><div class="industry-icon">💡</div><div class="industry-title">Autotech Startups</div><div class="industry-desc">New ventures building apps for buying, selling, insuring, or servicing vehicles use CarsXE as a foundational data layer — reliable, scalable, and affordable.</div><div class="industry-apis"><span class="api-chip">All APIs</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PRICING ═══════════════ -->`,
+  "pricing": `<div class="hero" style="padding:40px 56px 36px">
+    <div class="hero-eyebrow">Company</div>
+    <h1 class="hero-title">Pricing <span>Model</span></h1>
+    <p class="hero-desc">Usage-based — you pay for what you use, not a flat fee for access you may not need.</p>
+  </div>
+  <div class="content">
+    <div class="pricing-note">
+      <div class="pricing-note-title">Pay-per-call, not per seat</div>
+      <div class="pricing-note-text">CarsXE charges a <strong>modest base subscription fee</strong> plus a charge per <strong>successful API call</strong>. Failed calls are not charged. Self-serve pricing is published on the pricing page. Enterprise agreements depend on volume. <strong>Never quote a customer a single total</strong> — walk them through the unit math so they can calculate it themselves. This prevents billing surprises, which are the number-one cause of churn.</div>
+    </div>
+    <div class="section-header"><h2 class="section-title">How it works</h2></div>
+    <div class="how-it-works">
+      <div class="step-card"><div class="step-num">01</div><div class="step-title">Sign up &amp; get a free sandbox</div><div class="step-text">Any developer can sign up at api.carsxe.com and get a sandbox API key immediately. No sales involvement needed. Each endpoint has its own sandbox limits, no time limit.</div></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-title">Build the integration</div><div class="step-text">The developer connects their app to CarsXE using the API key. Official SDKs for JavaScript and Python make this faster. Once built, it runs automatically.</div></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-title">Pay only for successful results</div><div class="step-text">Monthly plan fee + per-call charge for calls that return data. No charge for errors or no-data responses. Volume discounts available for enterprise accounts.</div></div>
+    </div>
+    <div class="alert-box" style="margin-top:8px;"><strong>Discount authority:</strong> Reps can offer up to 30% off list price based on volume. Anything above 30% or non-standard structures need leadership approval. Always trade a discount for something: a longer term, higher committed volume, or a case study.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ COMPLIANCE ═══════════════ -->`,
+  "compliance": `<div class="hero" style="padding:40px 56px 36px">
+    <div class="hero-eyebrow">Company</div>
+    <h1 class="hero-title">Legal &amp; <span>Compliance</span></h1>
+    <p class="hero-desc">These are non-negotiable. They protect customers, the company, and you. Read them once and remember them forever.</p>
+  </div>
+  <div class="content">
+    <div class="section-header"><h2 class="section-title">The five compliance lines</h2></div>
+    <div class="compliance-list">
+      <div class="compliance-item"><div class="compliance-line">Line 1 — History &amp; Ownership: B2B Only</div><div class="compliance-text">Vehicle history and ownership data is licensed for business use only. Customers may integrate it into their platforms for legitimate business purposes. They may <strong>not</strong> resell history or ownership reports directly to individual consumers. If a prospect's model is "pay-per-report to consumers," the answer is no.</div></div>
+      <div class="compliance-item"><div class="compliance-line">Line 2 — Displaying History to End Users is Restricted</div><div class="compliance-text">Showing full vehicle history data directly to end users is legally constrained — shaped in part by incumbent industry lobbying. Some patterns (internal use, AI-summarised outputs) may be acceptable, but those are legal determinations. Capture the exact display intent and route to legal before making any promise.</div></div>
+      <div class="compliance-item"><div class="compliance-line">Line 3 — PII &amp; Ownership Outreach Requires Legal Review</div><div class="compliance-text">Using ownership or PII data to contact individuals is the highest-risk use case. Even sympathetic purposes like recall or safety outreach are not automatically permitted. Never green-light an outreach use case. Record the precise purpose and route to legal every time.</div></div>
+      <div class="compliance-item"><div class="compliance-line">Line 4 — Enterprise Contracts Live with Legal</div><div class="compliance-text">MSAs, warranties, indemnification, SLAs, data retention terms, and security attestations (SOC 2, GDPR, CCPA) are owned by legal and engineering. You gather requirements and keep momentum — you never negotiate or invent terms. Complete security questionnaires fast; speed here is a competitive advantage.</div></div>
+      <div class="compliance-item"><div class="compliance-line">Line 5 — Enterprise Legal Reviews Take Time</div><div class="compliance-text">Fortune 500 and large-enterprise legal reviews run 60–120 days. Silence during legal review is completely normal and is not a lost deal. Keep providing redlines, keep the internal champion warm, and do not close the opportunity for inactivity.</div></div>
+    </div>
+    <div class="alert-box">When in doubt, say: <strong>"That's a great question — I want to give you a precise answer, so let me confirm with our team and come back to you."</strong> Then route to your manager. Nobody loses respect for a rep who is careful with legal and data questions.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ PRODUCT PAGES ═══════════════ -->
+
+<!-- helper macro rendered inline for each product -->`,
+  "specs": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">🔍</div><div class="detail-meta"><h1 class="detail-title">Specifications API</h1><div class="detail-subtitle">The all-in-one VIN decoder for any vehicle</div><div class="detail-tags"><span class="tag tag-teal">Core Product</span><span class="tag tag-orange">VIN Required</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">The Specifications API is CarsXE's flagship product. You give it a VIN and it returns a comprehensive data profile of that vehicle — make, model, trim, engine, fuel type, transmission, body style, dimensions, weight, MSRP, and dozens more attributes. It decodes the VIN by looking up the vehicle in CarsXE's database and returning everything known about that specific configuration.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Dealerships populate online listings automatically — instead of manually typing specs for every car, they decode the VIN and publish instantly.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Insurance companies verify the exact vehicle configuration before writing a policy, reducing fraud.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Fleet managers track the full specs of every vehicle in their fleet from one dashboard.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Auto repair shops confirm the correct parts to order by looking up the exact engine and trim.</div></div></div></div>
+        <div class="detail-section"><div class="detail-section-title">Key data returned</div><p class="detail-text">Make · Model · Year · Trim · Body style · Engine size · Cylinders · Fuel type · Drive type (FWD/RWD/AWD) · Transmission · Doors · Seats · Curb weight · MSRP · Country of manufacture</p></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /specs</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">VIN number</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US · Canada · Mexico</div></div><div class="info-row"><div class="info-key">Response time</div><div class="info-val">~120ms</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Dealerships, Insurance, Fleet, Repair</div></div></div>
+    </div>
+  </div>`,
+  "intlvin": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">🌍</div><div class="detail-meta"><h1 class="detail-title">International VIN Decoder</h1><div class="detail-subtitle">Instantly decode any VIN worldwide</div><div class="detail-tags"><span class="tag tag-teal">Global</span><span class="tag tag-orange">VIN Required</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">The International VIN Decoder extends CarsXE's core decoding capability to vehicles manufactured and registered outside the United States. It interprets VINs from European, Asian, Latin American, and other international markets — handling different VIN structures and regional registration formats across 50+ countries.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Global auto marketplaces that list vehicles from multiple countries need a single decoding solution for all inventory.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Import/export businesses verifying vehicle identity and specs before shipping across borders.</div></div><div class="use-case"><div class="use-case-dot"></div><div>International fleet operators managing vehicles registered in different countries.</div></div></div></div>
+        <div class="detail-section"><div class="detail-section-title">Important coverage note</div><p class="detail-text">Korea and Japan are not covered. Some European markets have partial coverage. Always confirm a specific country against the coverage table before promising it to a customer.</p></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /internationalvindecoder</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">VIN number</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">50+ countries</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Global marketplaces, Import/export, Intl fleet</div></div></div>
+    </div>
+  </div>`,
+  "plate": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">🪪</div><div class="detail-meta"><h1 class="detail-title">Plate Decoder API</h1><div class="detail-subtitle">Decode license plates and get full vehicle information</div><div class="detail-tags"><span class="tag tag-teal">Lookup</span><span class="tag tag-yellow">No VIN Needed</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">The Plate Decoder accepts a license plate number plus a state or country, looks up the vehicle registration record, and returns the vehicle's full specifications and identity — bridging the gap between a plate and a complete vehicle profile. Many people know a car's plate but not its VIN; this API solves that.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Parking apps identify a vehicle type and size when a driver registers using their plate number.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Auto lenders verify a car's identity when the customer provides a plate instead of a VIN.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Roadside assistance and towing companies quickly identify a vehicle before dispatch.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /platedecoder</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">Plate number + state/country</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US, Canada, Mexico + 50+ countries</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Parking, Lenders, Roadside, Fleet</div></div></div>
+    </div>
+  </div>`,
+  "images": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">📷</div><div class="detail-meta"><h1 class="detail-title">Images API</h1><div class="detail-subtitle">Get professional images of any vehicle</div><div class="detail-tags"><span class="tag tag-teal">Media</span><span class="tag tag-yellow">Make / Model / Year</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">Returns high-quality stock photographs for any vehicle by make, model, and year. This removes the need to manually source, license, and store vehicle photos. CarsXE also offers a Custom Images product (v2) with more angles and higher resolution — though important: that is produced manually, is not real-time, and costs more (~$0.75/image).</p></div>
+        <div class="detail-section"><div class="detail-section-title">Honest limitation</div><p class="detail-text">Images are sourced from the web — they are not OEM studio renders. Exact factory colour and trim fidelity is a known limitation that several prospects have raised. Set expectations honestly. If a prospect needs studio-quality rendering, explore Custom Images but position it carefully — it is not a standard API offering.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Dealership websites show a representative photo of each vehicle even when no photos of the specific unit exist yet.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Rental car platforms show customers what their booked vehicle looks like.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /images</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">Make, Model, Year</div></div><div class="info-row"><div class="info-key">Returns</div><div class="info-val">Image URLs</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Listings, Rental platforms, Insurance apps</div></div></div>
+    </div>
+  </div>`,
+  "history": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">📋</div><div class="detail-meta"><h1 class="detail-title">History API</h1><div class="detail-subtitle">Get a detailed history report of any vehicle</div><div class="detail-tags"><span class="tag tag-teal">Reports</span><span class="tag tag-orange">VIN Required</span><span class="tag tag-orange">B2B Only</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">The History API aggregates a vehicle's life story from multiple sources — insurance claims, DMV records, auction results, and service records — and returns a structured report. This covers accidents and damage events, number of previous owners, mileage readings over time, title status (clean, salvage, rebuilt), theft records, and service history entries.</p></div>
+        <div class="detail-section"><div class="detail-section-title">⚠️ Legal — Read before selling</div><p class="detail-text">This product is for B2B use only. Customers cannot resell history reports directly to consumers. Displaying full history data to end users is legally restricted. Always confirm the customer's exact intended use and route to legal if there's any question about how they plan to display or share the data.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Used-car buyers' platforms make informed purchase decisions — avoiding vehicles with hidden accident damage.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Auto finance companies verify a vehicle's title status before approving a loan.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Insurance companies detect fraud by comparing claimed history with actual records.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /history</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">VIN number</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US · Canada (limited) · Mexico (limited)</div></div><div class="info-row"><div class="info-key">Legal</div><div class="info-val">B2B only — see compliance</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Used car, Finance, Warranty, Insurance</div></div></div>
+    </div>
+  </div>`,
+  "market": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">💰</div><div class="detail-meta"><h1 class="detail-title">Market Value API</h1><div class="detail-subtitle">Real-time vehicle pricing based on live market data</div><div class="detail-tags"><span class="tag tag-teal">Pricing</span><span class="tag tag-orange">VIN Required</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">Calculates the current fair market value of a specific vehicle. Takes the VIN plus optional parameters — state, mileage, and condition — and returns a pricing estimate based on real-time market data aggregated from dealerships, auctions, and private sales.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Optional parameters that refine the value</div><p class="detail-text">State (regional market differences) · Mileage (higher = lower value) · Condition (clean / average / rough)</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Dealerships price trade-in offers accurately without stale book values.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Insurance companies determine ACV for total-loss claims.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Lenders set loan-to-value ratios for auto financing.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /marketvalue</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">VIN number</div></div><div class="info-row"><div class="info-key">Optional</div><div class="info-val">State, Mileage, Condition</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US · Canada</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Dealers, Insurance, Lenders, Private sellers</div></div></div>
+    </div>
+  </div>`,
+  "recalls": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">⚠️</div><div class="detail-meta"><h1 class="detail-title">Vehicle Recalls API</h1><div class="detail-subtitle">NHTSA recall data by VIN in real time</div><div class="detail-tags"><span class="tag tag-teal">Safety</span><span class="tag tag-orange">VIN Required</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">Connects to NHTSA data and returns all open and closed recall campaigns for a given VIN — including the safety issue description, components affected, and remedy instructions. A recall is issued when a manufacturer or the government identifies a safety defect requiring a free repair.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Warranty platforms surface active recalls to customers, building trust through transparency.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Dealerships disclose recalls during the sales process, reducing liability.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Fleet operators track unresolved recall notices across their entire fleet.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /recalls</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">VIN number</div></div><div class="info-row"><div class="info-key">Data Source</div><div class="info-val">NHTSA (US Government)</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US only</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Warranty, Repair shops, Dealers, Fleet</div></div></div>
+    </div>
+  </div>`,
+  "plateimg": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">📸</div><div class="detail-meta"><h1 class="detail-title">Plate Image Recognition API</h1><div class="detail-subtitle">Read license plates from photos automatically</div><div class="detail-tags"><span class="tag tag-teal">AI / Vision</span><span class="tag tag-yellow">Image Input</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">Takes a photograph containing a license plate (via URL) and uses computer vision to read and return the plate text. Handles different plate styles, lighting conditions, and angles — eliminating manual plate entry. Any camera feed can go directly into the system.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Smart parking garages automatically open gates and log vehicle entries from a camera feed.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Dealerships photograph arriving vehicles and auto-populate intake records.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Insurance claims apps let customers photograph the other party's car at an accident scene.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /plateimagerecognition</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">Image URL</div></div><div class="info-row"><div class="info-key">Technology</div><div class="info-val">Computer Vision / AI</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US, Canada, Mexico + 50+ countries</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Parking, Dealerships, Insurance claims</div></div></div>
+    </div>
+  </div>`,
+  "vinocr": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">🔡</div><div class="detail-meta"><h1 class="detail-title">VIN OCR API</h1><div class="detail-subtitle">Extract VIN numbers from photos</div><div class="detail-tags"><span class="tag tag-teal">AI / Vision</span><span class="tag tag-yellow">Image Input</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">Reads VIN numbers from photographs of dashboard stickers, door jamb labels, or windshields. Instead of typing a 17-character VIN, a user takes a photo and the API extracts the number automatically — dramatically reducing data entry errors.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Honest limitation</div><p class="detail-text">17-character VIN OCR is inherently harder and less reliable than license plate OCR. Customers have flagged consistency gaps. Always recommend a test on their actual images, and for high-stakes flows steer toward plate recognition where possible — it performs better.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Mobile insurance and loan apps let users scan their VIN instead of typing it.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Auction houses digitise incoming vehicles quickly using a phone camera.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /vinocr</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">Image URL</div></div><div class="info-row"><div class="info-key">Note</div><div class="info-val">Less reliable than plate OCR — test first</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Mobile apps, Auctions, Repair shops</div></div></div>
+    </div>
+  </div>`,
+  "ymm": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">🚗</div><div class="detail-meta"><h1 class="detail-title">Year Make Model API</h1><div class="detail-subtitle">Look up vehicle data without a VIN</div><div class="detail-tags"><span class="tag tag-teal">Lookup</span><span class="tag tag-yellow">No VIN Needed</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">When no VIN is available, this API retrieves vehicle data using year, make, and model — the three attributes most people know about their car. It returns available trims and specifications matching that combination, giving a general vehicle profile without needing a specific unit's VIN.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Auto parts retailers suggest compatible parts when a customer knows their car but not the VIN.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Insurance quote tools generate preliminary estimates before the VIN is collected.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Consumer-facing apps provide car research and model comparison tools.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /ymm</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">Year, Make, Model</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Parts retailers, Insurance quotes, Research tools</div></div></div>
+    </div>
+  </div>`,
+  "obd": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">🔧</div><div class="detail-meta"><h1 class="detail-title">OBD Codes Decoder</h1><div class="detail-subtitle">Translate diagnostic fault codes into plain English</div><div class="detail-tags"><span class="tag tag-teal">Diagnostics</span><span class="tag tag-yellow">Code Input</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">Takes any OBD-II diagnostic trouble code (like P0300) and returns a human-readable description of the fault, the system affected, and general guidance. OBD codes are the error codes a car's onboard computer generates when it detects a problem — the "check engine" light means there's an OBD code stored.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Repair shop apps display the fault meaning instantly when a technician scans the car.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Consumer OBD reader apps translate confusing codes into language a driver understands.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Fleet management platforms automatically flag and categorise vehicle faults across large fleets.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /obdcodes</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">OBD-II fault code (e.g. P0300)</div></div><div class="info-row"><div class="info-key">Standard</div><div class="info-val">OBD-II (all US vehicles post-1996)</div></div><div class="info-row"><div class="info-key">Country scope</div><div class="info-val">Not country-specific — codes are standardised</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Repair shops, Consumer apps, Fleet</div></div></div>
+    </div>
+  </div>`,
+  "lien": `<div class="content">
+    <div class="detail-back" onclick="showPage('overview')">← Back to overview</div>
+    <div class="detail-header"><div class="detail-icon-box">🔒</div><div class="detail-meta"><h1 class="detail-title">Lien &amp; Theft Check API</h1><div class="detail-subtitle">Check for outstanding liens and theft records</div><div class="detail-tags"><span class="tag tag-teal">Risk</span><span class="tag tag-orange">VIN Required</span></div></div></div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section"><div class="detail-section-title">What it does</div><p class="detail-text">Checks two critical risk factors: whether a vehicle has an active financial lien (a legal claim by a lender for an unpaid loan), and whether it has been reported stolen in any national database. Both facts are invisible to the naked eye but can have serious financial and legal consequences for anyone buying the vehicle or lending against it.</p></div>
+        <div class="detail-section"><div class="detail-section-title">Who uses it and why</div><div class="use-cases"><div class="use-case"><div class="use-case-dot"></div><div>Auto lenders screen vehicles before approving a loan — a car already pledged as collateral can't be used again.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Dealers protect themselves from unknowingly purchasing stolen inventory at auction.</div></div><div class="use-case"><div class="use-case-dot"></div><div>Private buyers check before purchasing a used car to ensure the title is truly clean.</div></div></div></div>
+      </div>
+      <div class="info-box"><div class="info-row"><div class="info-key">Endpoint</div><div class="endpoint-box">GET /lientheftcheck</div></div><div class="info-row"><div class="info-key">Required Input</div><div class="info-val">VIN number</div></div><div class="info-row"><div class="info-key">Checks</div><div class="info-val">Active liens + Theft records</div></div><div class="info-row"><div class="info-key">Coverage</div><div class="info-val">US · Canada · Mexico</div></div><div class="info-row"><div class="info-key">Best for</div><div class="info-val">Lenders, Dealers, Private buyers</div></div></div>
+    </div>
+  </div>`
+};
+
+const SIDEBAR = `<div class="brand">
+    <div class="brand-logo"><div class="dot"></div>CarsXE</div>
+    <div class="brand-sub">New Hire Encyclopedia · June 2026</div>
+  </div>
+  <div class="nav-search-wrap">
+    <input class="nav-search" type="text" placeholder="Search pages…" oninput="filterNav(this.value)">
+  </div>
+  <nav id="mainNav">
+    <div class="nav-section">
+      <div class="nav-label">Start Here</div>
+      <div class="nav-item active" onclick="showPage('glossary')" data-page="glossary"><span class="nav-icon">📖</span> Glossary of Terms</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Company</div>
+      <div class="nav-item" onclick="showPage('overview')" data-page="overview"><span class="nav-icon">🏠</span> What is CarsXE?</div>
+      <div class="nav-item" onclick="showPage('industries')" data-page="industries"><span class="nav-icon">🏭</span> Industries Served</div>
+      <div class="nav-item" onclick="showPage('pricing')" data-page="pricing"><span class="nav-icon">💳</span> Pricing Model</div>
+      <div class="nav-item" onclick="showPage('compliance')" data-page="compliance"><span class="nav-icon">⚖️</span> Legal &amp; Compliance</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Products</div>
+      <div class="nav-item" onclick="showPage('specs')" data-page="specs"><span class="nav-icon">🔍</span> Specifications API</div>
+      <div class="nav-item" onclick="showPage('intlvin')" data-page="intlvin"><span class="nav-icon">🌍</span> International VIN Decoder</div>
+      <div class="nav-item" onclick="showPage('plate')" data-page="plate"><span class="nav-icon">🪪</span> Plate Decoder API</div>
+      <div class="nav-item" onclick="showPage('images')" data-page="images"><span class="nav-icon">📷</span> Images API</div>
+      <div class="nav-item" onclick="showPage('history')" data-page="history"><span class="nav-icon">📋</span> History API</div>
+      <div class="nav-item" onclick="showPage('market')" data-page="market"><span class="nav-icon">💰</span> Market Value API</div>
+      <div class="nav-item" onclick="showPage('recalls')" data-page="recalls"><span class="nav-icon">⚠️</span> Vehicle Recalls API</div>
+      <div class="nav-item" onclick="showPage('plateimg')" data-page="plateimg"><span class="nav-icon">📸</span> Plate Image Recognition</div>
+      <div class="nav-item" onclick="showPage('vinocr')" data-page="vinocr"><span class="nav-icon">🔡</span> VIN OCR API</div>
+      <div class="nav-item" onclick="showPage('ymm')" data-page="ymm"><span class="nav-icon">🚗</span> Year Make Model API</div>
+      <div class="nav-item" onclick="showPage('obd')" data-page="obd"><span class="nav-icon">🔧</span> OBD Codes Decoder</div>
+      <div class="nav-item" onclick="showPage('lien')" data-page="lien"><span class="nav-icon">🔒</span> Lien &amp; Theft Check</div>
+    </div>
+  </nav>`;
+
+// Render sidebar
+document.getElementById('sidebar').innerHTML = SIDEBAR;
+
+// Render initial page
+let currentPage = 'glossary';
+function showPage(id) {
+  if (!PAGES[id]) return;
+  currentPage = id;
+  document.getElementById('main').innerHTML = PAGES[id];
+  document.getElementById('main').scrollTop = 0;
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.page === id);
+  });
+  // re-init glossary listeners
+  initGlossary();
+}
+
+function filterNav(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.style.display = item.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.nav-label').forEach(l => l.style.display = q ? 'none' : '');
+}
+
+function toggleGlossary(trigger) {
+  trigger.parentElement.classList.toggle('open');
+}
+
+let currentCat = 'all';
+
+function searchGlossary(query) {
+  const q = query.trim().toLowerCase();
+  const items = document.querySelectorAll('#glossaryList .glossary-item');
+  let visible = 0;
+  document.querySelectorAll('.glossary-term').forEach(t => { t.innerHTML = t.textContent; });
+  items.forEach(item => {
+    const cat = item.dataset.cat;
+    const terms = (item.dataset.terms || '').toLowerCase();
+    const termEl = item.querySelector('.glossary-term');
+    const termText = termEl ? termEl.textContent.toLowerCase() : '';
+    const bodyText = (item.querySelector('.glossary-body') || {}).textContent || '';
+    const catMatch = currentCat === 'all' || cat === currentCat;
+    const textMatch = !q || termText.includes(q) || terms.includes(q) || bodyText.toLowerCase().includes(q);
+    if (catMatch && textMatch) {
+      item.classList.remove('hidden');
+      visible++;
+      if (q && termText.includes(q) && termEl) {
+        const orig = termEl.textContent;
+        const idx = orig.toLowerCase().indexOf(q);
+        termEl.innerHTML = orig.slice(0,idx) + '<span class="highlight">' + orig.slice(idx,idx+q.length) + '</span>' + orig.slice(idx+q.length);
+      }
+      if (q) item.classList.add('open'); else item.classList.remove('open');
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+  const count = document.getElementById('resultCount');
+  const noRes = document.getElementById('noResults');
+  if (count) count.textContent = q ? (visible + ' term' + (visible !== 1 ? 's' : '') + ' matched') : '';
+  if (noRes) noRes.style.display = (q && visible === 0) ? 'block' : 'none';
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const q = document.getElementById('glossarySearch');
+  searchGlossary(q ? q.value : '');
+}
+
+function initGlossary() {
+  // nothing extra needed - onclick handlers are inline
+}
+
+// Initial render
+showPage('glossary');
+</script>
+</body>
+</html>
